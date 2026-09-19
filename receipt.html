@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservation Receipt | Continental Motors</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #080808;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .invoice-container {
+      width: 90%;
+      max-width: 800px;
+      margin: 40px auto;
+      background: #121212;
+      box-shadow: 0 0 30px rgba(192, 192, 192, 0.25);
+      border-radius: 12px;
+      border: 1px solid rgba(192, 192, 192, 0.3);
+      overflow: hidden;
+    }
+
+    .brand {
+      text-align: left;
+      padding: 25px 30px;
+      background-color: #050505;
+      color: #fff;
+      border-bottom: 1px solid rgba(192, 192, 192, 0.2);
+    }
+
+    .brand h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 2px;
+      color: silver;
+    }
+
+    .brand p {
+      margin: 5px 0 0;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .header {
+      background: linear-gradient(90deg, #1c1c1c, #2a2a2a);
+      padding: 20px 30px;
+      text-align: center;
+      border-bottom: 1px solid silver;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 1px;
+      color: #ffffff;
+      text-shadow: 0 0 10px silver;
+    }
+
+    .details {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px;
+      border-bottom: 1px solid rgba(192, 192, 192, 0.2);
+    }
+
+    .details div {
+      width: 48%;
+    }
+
+    .details h3 {
+      margin-bottom: 12px;
+      font-size: 18px;
+      color: silver;
+      border-bottom: 1px solid rgba(192, 192, 192, 0.2);
+      padding-bottom: 5px;
+    }
+
+    .details p {
+      margin: 6px 0;
+      font-size: 15px;
+      color: #ccc;
+    }
+
+    table {
+      width: 90%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      border: 1px solid rgba(192, 192, 192, 0.2);
+      padding: 12px 15px;
+    }
+
+    th {
+      background-color: #1a1a1a;
+      color: silver;
+      font-size: 15px;
+    }
+
+    td {
+      color: #ddd;
+      font-size: 14px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 25px 30px;
+      background-color: #080808;
+      color: #aaa;
+      border-top: 1px solid rgba(192, 192, 192, 0.2);
+    }
+
+    .footer p {
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    .actions-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .btn {
+      background-color: silver;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background-color: #ffffff;
+      box-shadow: 0 0 15px silver;
+      transform: scale(1.05);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: silver;
+      border: 1px solid silver;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice-container">
+    <div class="brand">
+      <h2>Continental Motors</h2>
+      <p>Beyond Luxury. Beyond Limits.</p>
+    </div>
+
+    <div class="header">
+      <h1>Reservation Receipt</h1>
+    </div>
+
+    <div class="details">
+      <div>
+        <h3>Invoice To:</h3>
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+      </div>
+      <div>
+        <h3>Invoice Details:</h3>
+        <p><strong>Date:</strong> <span id="date"></span></p>
+        <p><strong>Car Model:</strong> <span id="car"></span></p>
+        <p><strong>Reservation Price:</strong> ₹<span id="price"></span></p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>SL</th>
+          <th>Item Description</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td id="carDesc">Supercar Priority Reservation</td>
+          <td>1</td>
+          <td>₹<span id="priceTable"></span></td>
+          <td>₹<span id="total"></span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <p>Thank you for choosing Continental Motors. Our concierge team will reach out shortly.</p>
+      <div class="actions-row">
+        <button class="btn" id="downloadBtn">Download Receipt</button>
+        <a href="index.html" class="btn btn-secondary">Return to Showroom</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem("receiptData"));
+    if (data) {
+      document.getElementById("name").textContent = data.name;
+      document.getElementById("email").textContent = data.email;
+      document.getElementById("car").textContent = data.car;
+      document.getElementById("price").textContent = data.price;
+      document.getElementById("priceTable").textContent = data.price;
+      document.getElementById("total").textContent = data.price;
+      document.getElementById("date").textContent = data.date;
+
+      document.getElementById("downloadBtn").addEventListener("click", () => {
+        const bill = `
+==================================================
+           CONTINENTAL MOTORS RECEIPT
+==================================================
+Date: ${data.date}
+
+Client Name: ${data.name}
+Client Email: ${data.email}
+
+Reserved Vehicle: ${data.car}
+Total Price: ₹${data.price}
+
+Thank you for choosing Continental Motors!
+Beyond Luxury. Beyond Limits.
+==================================================
+        `;
+        const blob = new Blob([bill], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${data.car.replace(/\s+/g, '_')}-Receipt.txt`;
+        link.click();
+      });
+    } else {
+      document.body.innerHTML = `
+        <div style="text-align:center; padding: 50px;">
+          <h2 style="color:silver; font-family: sans-serif;">No active receipt found!</h2>
+          <a href="index.html" style="color:white; background:silver; padding:10px 20px; border-radius:6px; text-decoration:none;">Go Back to Home</a>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

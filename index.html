@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Continental Motors | Luxury Beyond Limits</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <button class="menu" onclick="openMenu()">☰ Menu</button>
+    <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">CM</div>
+    <div class="nav-right" style="display:flex; align-items:center; gap:15px;">
+      <a href="admin.html" id="admin-nav-link" style="display:none; color:silver; font-weight:bold; text-decoration:none; border:1px solid silver; padding:4px 10px; border-radius:6px;">⚡ Admin Panel</a>
+      <div class="account" id="account-nav-btn" onclick="openAccount()">👤 Account</div>
+    </div>
+  </nav>
+
+  <!-- Account Modal (Login & Sign-Up Tabs) -->
+  <div id="account-modal" style="display:none;">
+    <div class="modal-content">
+      <div class="auth-tabs">
+        <button id="tab-login-btn" class="auth-tab active" onclick="switchAuthTab('login')">Log In</button>
+        <button id="tab-signup-btn" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Log In Form -->
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <input type="email" id="login-email" placeholder="Email Address" required><br>
+        <input type="password" id="login-pass" placeholder="Password" required><br>
+        <button type="submit" id="acc-save">Log In</button>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form id="signup-form" style="display:none;" onsubmit="handleSignup(event)">
+        <input type="text" id="signup-name" placeholder="Full Name" required><br>
+        <input type="email" id="signup-email" placeholder="Email Address" required><br>
+        <input type="password" id="signup-pass" placeholder="Password (min 6 chars)" required><br>
+        <input type="password" id="signup-confirm-pass" placeholder="Confirm Password" required><br>
+        <select id="signup-role" onchange="toggleAdminKeyField()" style="width:100%; padding:12px; margin-bottom:15px; background:rgba(255,255,255,0.05); border:1px solid rgba(192,192,192,0.3); border-radius:8px; color:white; outline:none;">
+          <option value="client" style="background:#111; color:white;">Account Role: Client</option>
+          <option value="admin" style="background:#111; color:white;">Account Role: Executive Admin</option>
+        </select>
+        <input type="password" id="admin-key-field" placeholder="Admin Access Passcode (admin123)" style="display:none;"><br>
+        <button type="submit" id="acc-signup-btn">Create Account</button>
+      </form>
+
+      <!-- User Profile State (When Logged In) -->
+      <div id="profile-state" style="display:none;">
+        <h3 id="profile-greeting" style="color:white; margin-bottom:5px;">Welcome Back!</h3>
+        <p id="profile-email-disp" style="color:#aaa; font-size:14px; margin-bottom:20px;"></p>
+        <button onclick="handleLogout()" class="close-modal-btn" style="border-color:#ff5252 !important; color:#ff5252;">Log Out</button>
+      </div>
+
+      <button class="close-modal-btn" onclick="closeAccount()" style="margin-top:10px;">Close</button>
+    </div>
+  </div>
+
+  <!-- Menu Overlay -->
+  <div id="menu-overlay">
+    <div class="overlay-bg" onclick="closeMenu()"></div>
+    <div class="overlay-content">
+      <button class="close" onclick="closeMenu()">×</button>
+      <ul class="main-menu">
+        <li onclick="scrollToCollection()">Collection</li>
+        <li class="has-submenu">
+          <span onclick="toggleBrands()">Brands ▸</span>
+          <ul id="brands-list" class="submenu">
+            <li onclick="scrollToSection('aston')">Aston Martin</li>
+            <li onclick="scrollToSection('audi')">Audi</li>
+            <li onclick="scrollToSection('bentley')">Bentley</li>
+            <li onclick="scrollToSection('bmw')">BMW</li>
+            <li onclick="scrollToSection('ferrari')">Ferrari</li>
+            <li onclick="scrollToSection('lamborghini')">Lamborghini</li>
+            <li onclick="scrollToSection('maserati')">Maserati</li>
+            <li onclick="scrollToSection('mercedes-benz')">Mercedes-Benz</li>
+            <li onclick="scrollToSection('mercedes-amg')">Mercedes-AMG</li>
+            <li onclick="scrollToSection('pagani')">Pagani</li>
+            <li onclick="scrollToSection('porsche')">Porsche</li>
+            <li onclick="scrollToSection('rolls')">Rolls-Royce</li>
+          </ul>
+        </li>
+        <li onclick="scrollToSection('experience')">Experience</li>
+        <li onclick="scrollToSection('about')">About Us</li>
+        <li onclick="scrollToSection('faq')">FAQs</li>
+        <li onclick="scrollToSection('terms')">Terms of Service</li>
+        <li onclick="scrollToSection('privacy')">Privacy Policy</li>
+        <li id="menu-admin-item" style="display:none;" onclick="window.location.href='admin.html'">⚡ Admin Dashboard</li>
+        <li onclick="openAccount()">Account</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <video autoplay muted loop id="hero-video">
+      <source src="Videos/luxury-cars.mp4" type="video/mp4">
+    </video>
+    <div class="hero-content">
+      <h1>CONTINENTAL MOTORS</h1>
+      <p>Beyond Luxury. Beyond Limits.</p>
+      <button onclick="scrollToCollection()">Explore Collection</button>
+    </div>
+  </section>
+
+  <!-- Receipt Display Container -->
+  <div id="receipt" style="margin-top:20px; text-align:center; color:white;"></div>
+
+  <!-- Featured Collection -->
+  <section class="featured-collection" id="trilogy">
+    <h2>Our Epic Trilogy</h2>
+    <div class="featured-grid">
+
+      <!-- Porsche -->
+      <div class="featured-card">
+        <img src="Images/porsche911.jpeg" alt="Porsche 911 Cover" class="cover">
+        <video src="Videos/porsche-911.mp4" muted loop></video>
+        <div class="overlay">
+          <h3>Porsche 911 Turbo S</h3>
+        </div>
+      </div>
+
+      <!-- BMW -->
+      <div class="featured-card">
+        <img src="Images/bmwm5cs.jpeg" alt="BMW M5 Cover" class="cover">
+        <video src="Videos/bmw-m5cs.mp4" muted loop></video>
+        <div class="overlay">
+          <h3>BMW M5 CS</h3>
+        </div>
+      </div>
+
+      <!-- Ferrari -->
+      <div class="featured-card">
+        <img src="Images/ferrariSF90.jpeg" alt="Ferrari SF90 Cover" class="cover">
+        <video src="Videos/ferrari-sf90.mp4" muted loop></video>
+        <div class="overlay">
+          <h3>Ferrari SF90 Stradale</h3>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Our Collection -->
+  <section class="collection" id="collection-section">
+    <h2>OUR COLLECTION</h2>
+
+    <!-- Aston Martin -->
+    <section id="aston">
+      <h1 class="brand-title"> ASTON MARTIN </h1>
+      <div class="car-grid">
+
+        <!-- Aston Martin DB12 -->
+        <div class="car-card" id="astonmartin-db12" onmouseleave="resetCard('astonmartin-db12')">
+          <img src="Images/astonmartinDB12.jpg" alt="Aston Martin DB12">
+          <h3>Aston Martin DB12</h3>
+          <p>Grand Tourer • 671 HP</p>
+          <button onclick="toggleDetails('astonmartin-db12')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 671 HP</li>
+              <li>Top Speed: 325 km/h</li>
+              <li>Price: ₹22000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Aston Martin DB12" 
+                    data-price="22000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+         
+        <!-- Aston Martin Vantage -->
+        <div class="car-card" id="astonmartin-vantage" onmouseleave="resetCard('astonmartin-vantage')">
+          <img src="Images/astonmartinVantage.jpg" alt="Aston Martin Vantage">
+          <h3>Aston Martin Vantage</h3>
+          <p>Sports Coupe • 503 HP</p>
+          <button onclick="toggleDetails('astonmartin-vantage')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 503 HP</li>
+              <li>Top Speed: 314 km/h</li>
+              <li>Price: ₹15000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Aston Martin Vantage" 
+                    data-price="15000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Audi -->
+    <section id="audi">
+      <h1 class="brand-title"> AUDI </h1>
+      <div class="car-grid">
+
+        <!-- Audi R8 -->
+        <div class="car-card" id="audi-r8" onmouseleave="resetCard('audi-r8')">
+          <img src="Images/audiR8.jpg" alt="Audi R8">
+          <h3>Audi R8</h3>
+          <p>Supercar • 602 HP</p>
+          <button onclick="toggleDetails('audi-r8')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 602 HP</li>
+              <li>Top Speed: 331 km/h</li>
+              <li>Price: ₹16000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Audi R8" 
+                    data-price="16000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Audi RS7 Sportback -->
+        <div class="car-card" id="audi-rs7" onmouseleave="resetCard('audi-rs7')">
+          <img src="Images/audiRS7.jpg" alt="Audi RS7 Sportback">
+          <h3>Audi RS7 Sportback</h3>
+          <p>Sports Sedan • 621 HP</p>
+          <button onclick="toggleDetails('audi-rs7')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 621 HP</li>
+              <li>Top Speed: 305 km/h</li>
+              <li>Price: ₹13000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Audi RS7 Sportback" 
+                    data-price="13000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Audi RS Q8 -->
+        <div class="car-card" id="audi-rsq8" onmouseleave="resetCard('audi-rsq8')">
+          <img src="Images/audiRSQ8.jpg" alt="Audi RS Q8">
+          <h3>Audi RS Q8</h3>
+          <p>Luxury SUV • 631 HP</p>
+          <button onclick="toggleDetails('audi-rsq8')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 631 HP</li>
+              <li>Top Speed: 305 km/h</li>
+              <li>Price: ₹14000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Audi RS Q8" 
+                    data-price="14000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Audi e-tron GT -->
+        <div class="car-card" id="audi-etron" onmouseleave="resetCard('audi-etron')">
+          <img src="Images/audiEtronGT.jpg" alt="Audi e-tron GT">
+          <h3>Audi e-tron GT</h3>
+          <p>Electric Sedan • 637 HP</p>
+          <button onclick="toggleDetails('audi-etron')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Electric</li>
+              <li>Power: 637 HP</li>
+              <li>Top Speed: 250 km/h</li>
+              <li>Price: ₹11000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Audi e-tron GT" 
+                    data-price="11000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Bentley -->
+    <section id="bentley">
+      <h1 class="brand-title"> BENTLEY </h1>
+      <div class="car-grid">
+
+        <!-- Bentley Continental GT -->
+        <div class="car-card" id="bentley-gt" onmouseleave="resetCard('bentley-gt')">
+          <img src="Images/bentleyGT.jpg" alt="Bentley Continental GT">
+          <h3>Bentley Continental GT</h3>
+          <p>Luxury Coupe • 650 HP</p>
+          <button onclick="toggleDetails('bentley-gt')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 650 HP</li>
+              <li>Top Speed: 335 km/h</li>
+              <li>Price: ₹25000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Bentley Continental GT" 
+                    data-price="25000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Bentley Bentayga -->
+        <div class="car-card" id="bentley-bentayga" onmouseleave="resetCard('bentley-bentayga')">
+          <img src="Images/bentleyBentayga.jpg" alt="Bentley Bentayga">
+          <h3>Bentley Bentayga</h3>
+          <p>Luxury SUV • 542 HP</p>
+          <button onclick="toggleDetails('bentley-bentayga')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 542 HP</li>
+              <li>Top Speed: 290 km/h</li>
+              <li>Price: ₹21000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Bentley Bentayga" 
+                    data-price="21000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BMW -->
+    <section id="bmw">
+      <h1 class="brand-title"> BMW </h1>
+      <div class="car-grid">
+
+        <!-- BMW M4 Competition -->
+        <div class="car-card" id="bmw-m4" onmouseleave="resetCard('bmw-m4')">
+          <img src="Images/bmwM4.jpg" alt="BMW M4 Competition">
+          <h3>BMW M4 Competition</h3>
+          <p>Sports Coupe • 503 HP</p>
+          <button onclick="toggleDetails('bmw-m4')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 503 HP</li>
+              <li>Top Speed: 290 km/h</li>
+              <li>Price: ₹8500000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="BMW M4 Competition" 
+                    data-price="8500000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- BMW M5 CS -->
+        <div class="car-card" id="bmw-m5cs" onmouseleave="resetCard('bmw-m5cs')">
+          <img src="Images/bmwm5cs.jpeg" alt="BMW M5 CS">
+          <h3>BMW M5 CS</h3>
+          <p>Sports Sedan • 627 HP</p>
+          <button onclick="toggleDetails('bmw-m5cs')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 627 HP</li>
+              <li>Top Speed: 305 km/h</li>
+              <li>Price: ₹14500000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="BMW M5 CS" 
+                    data-price="14500000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- BMW X7 -->
+        <div class="car-card" id="bmw-x7" onmouseleave="resetCard('bmw-x7')">
+          <img src="Images/bmwX7.jpg" alt="BMW X7">
+          <h3>BMW X7</h3>
+          <p>Luxury SUV • 523 HP</p>
+          <button onclick="toggleDetails('bmw-x7')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 523 HP</li>
+              <li>Top Speed: 250 km/h</li>
+              <li>Price: ₹9500000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="BMW X7" 
+                    data-price="9500000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- BMW XM -->
+        <div class="car-card" id="bmw-xm" onmouseleave="resetCard('bmw-xm')">
+          <img src="Images/bmwXM.jpg" alt="BMW XM">
+          <h3>BMW XM</h3>
+          <p>Hybrid SUV • 644 HP</p>
+          <button onclick="toggleDetails('bmw-xm')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Hybrid</li>
+              <li>Power: 644 HP</li>
+              <li>Top Speed: 270 km/h</li>
+              <li>Price: ₹16000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="BMW XM" 
+                    data-price="16000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Ferrari -->
+    <section id="ferrari">
+      <h1 class="brand-title">FERRARI </h1>
+      <div class="car-grid">
+
+        <!-- Ferrari SF90 Stradale -->
+        <div class="car-card" id="ferrari-sf90" onmouseleave="resetCard('ferrari-sf90')">
+          <img src="Images/ferrariSF90.jpeg" alt="Ferrari SF90 Stradale">
+          <h3>Ferrari SF90 Stradale</h3>
+          <p>Hybrid Supercar • 986 HP</p>
+          <button onclick="toggleDetails('ferrari-sf90')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Hybrid</li>
+              <li>Power: 986 HP</li>
+              <li>Top Speed: 340 km/h</li>
+              <li>Price: ₹62500000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Ferrari SF90 Stradale" 
+                    data-price="62500000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Ferrari Roma -->
+        <div class="car-card" id="ferrari-roma" onmouseleave="resetCard('ferrari-roma')">
+          <img src="Images/ferrariRoma.jpg" alt="Ferrari Roma">
+          <h3>Ferrari Roma</h3>
+          <p>Grand Tourer • 612 HP</p>
+          <button onclick="toggleDetails('ferrari-roma')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 612 HP</li>
+              <li>Top Speed: 320 km/h</li>
+              <li>Price: ₹24700000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Ferrari Roma" 
+                    data-price="24700000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Mercedes-Benz -->
+    <section id="mercedes-benz">
+      <h1 class="brand-title"> MERCEDES-BENZ </h1>
+      <div class="car-grid">
+
+        <!-- Mercedes-Benz S-Class -->
+        <div class="car-card" id="mercedes-sclass" onmouseleave="resetCard('mercedes-sclass')">
+          <img src="Images/mercedesSClass.jpg" alt="Mercedes-Benz S-Class">
+          <h3>Mercedes-Benz S-Class</h3>
+          <p>Luxury Sedan • 496 HP</p>
+          <button onclick="toggleDetails('mercedes-sclass')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 496 HP</li>
+              <li>Top Speed: 250 km/h</li>
+              <li>Price: ₹12000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Mercedes-Benz S-Class" 
+                    data-price="12000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Mercedes-Benz G-Class -->
+        <div class="car-card" id="mercedes-gclass" onmouseleave="resetCard('mercedes-gclass')">
+          <img src="Images/mercedesGClass.jpg" alt="Mercedes-Benz G-Class">
+          <h3>Mercedes-Benz G-Class</h3>
+          <p>Luxury SUV • 577 HP</p>
+          <button onclick="toggleDetails('mercedes-gclass')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 577 HP</li>
+              <li>Top Speed: 240 km/h</li>
+              <li>Price: ₹18000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Mercedes-Benz G-Class" 
+                    data-price="18000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Mercedes-Benz GLS -->
+        <div class="car-card" id="mercedes-gls" onmouseleave="resetCard('mercedes-gls')">
+          <img src="Images/mercedesGLS.jpg" alt="Mercedes-Benz GLS">
+          <h3>Mercedes-Benz GLS</h3>
+          <p>Luxury SUV • 483 HP</p>
+          <button onclick="toggleDetails('mercedes-gls')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 483 HP</li>
+              <li>Top Speed: 250 km/h</li>
+              <li>Price: ₹9500000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Mercedes-Benz GLS" 
+                    data-price="9500000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Mercedes-AMG -->
+    <section id="mercedes-amg">
+      <h1 class="brand-title"> MERCEDES-AMG </h1>
+      <div class="car-grid">
+
+        <!-- Mercedes-AMG GT 63 S -->
+        <div class="car-card" id="amg-gt63" onmouseleave="resetCard('amg-gt63')">
+          <img src="Images/amgGT63.jpg" alt="Mercedes-AMG GT 63 S">
+          <h3>Mercedes-AMG GT 63 S</h3>
+          <p>Performance Sedan • 630 HP</p>
+          <button onclick="toggleDetails('amg-gt63')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 630 HP</li>
+              <li>Top Speed: 315 km/h</li>
+              <li>Price: ₹18000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Mercedes-AMG GT 63 S" 
+                    data-price="18000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Mercedes-AMG SL 63 -->
+        <div class="car-card" id="amg-sl63" onmouseleave="resetCard('amg-sl63')">
+          <img src="Images/amgSL63.webp" alt="Mercedes-AMG SL 63">
+          <h3>Mercedes-AMG SL 63</h3>
+          <p>Roadster • 577 HP</p>
+          <button onclick="toggleDetails('amg-sl63')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 577 HP</li>
+              <li>Top Speed: 315 km/h</li>
+              <li>Price: ₹18500000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Mercedes-AMG SL 63" 
+                    data-price="18500000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Lamborghini -->
+    <section id="lamborghini">
+      <h1 class="brand-title"> LAMBORGHINI </h1>
+      <div class="car-grid">
+
+        <!-- Lamborghini Revuelto -->
+        <div class="car-card" id="lamborghini-revuelto" onmouseleave="resetCard('lamborghini-revuelto')">
+          <img src="Images/lamborghiniRevuelto.jpg" alt="Lamborghini Revuelto">
+          <h3>Lamborghini Revuelto</h3>
+          <p>Hybrid Supercar • 1001 HP</p>
+          <button onclick="toggleDetails('lamborghini-revuelto')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Hybrid</li>
+              <li>Power: 1001 HP</li>
+              <li>Top Speed: 350 km/h</li>
+              <li>Price: ₹60800000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Lamborghini Revuelto" 
+                    data-price="60800000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Lamborghini Huracán EVO -->
+        <div class="car-card" id="lamborghini-huracan" onmouseleave="resetCard('lamborghini-huracan')">
+          <img src="Images/lamborghiniHuracan.jpg" alt="Lamborghini Huracán EVO">
+          <h3>Lamborghini Huracán EVO</h3>
+          <p>Sports Car • 631 HP</p>
+          <button onclick="toggleDetails('lamborghini-huracan')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 631 HP</li>
+              <li>Top Speed: 325 km/h</li>
+              <li>Price: ₹30000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Lamborghini Huracán EVO" 
+                    data-price="30000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Lamborghini Urus -->
+        <div class="car-card" id="lamborghini-urus" onmouseleave="resetCard('lamborghini-urus')">
+          <img src="Images/lamborghiniUrus.jpg" alt="Lamborghini Urus">
+          <h3>Lamborghini Urus</h3>
+          <p>Luxury SUV • 657 HP</p>
+          <button onclick="toggleDetails('lamborghini-urus')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 657 HP</li>
+              <li>Top Speed: 305 km/h</li>
+              <li>Price: ₹25000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Lamborghini Urus" 
+                    data-price="25000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Pagani -->
+    <section id="pagani">
+      <h1 class="brand-title"> PAGANI </h1>
+      <div class="car-grid">
+
+        <!-- Pagani Huayra -->
+        <div class="car-card" id="pagani-huayra" onmouseleave="resetCard('pagani-huayra')">
+          <img src="Images/paganiHuayra.jpg" alt="Pagani Huayra">
+          <h3>Pagani Huayra</h3>
+          <p>Hypercar • 720 HP</p>
+          <button onclick="toggleDetails('pagani-huayra')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 720 HP</li>
+              <li>Top Speed: 383 km/h</li>
+              <li>Price: ₹320000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Pagani Huayra" 
+                    data-price="320000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Pagani Zonda -->
+        <div class="car-card" id="pagani-zonda" onmouseleave="resetCard('pagani-zonda')">
+          <img src="Images/paganiZonda.jpg" alt="Pagani Zonda">
+          <h3>Pagani Zonda</h3>
+          <p>Hypercar • 750 HP</p>
+          <button onclick="toggleDetails('pagani-zonda')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 750 HP</li>
+              <li>Top Speed: 370 km/h</li>
+              <li>Price: ₹280000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Pagani Zonda" 
+                    data-price="280000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Porsche -->
+    <section id="porsche">
+      <h1 class="brand-title"> PORSCHE </h1>
+      <div class="car-grid">
+
+        <!-- Porsche 911 Turbo S -->
+        <div class="car-card" id="porsche-911" onmouseleave="resetCard('porsche-911')">
+          <img src="Images/porsche911.jpeg" alt="Porsche 911 Turbo S">
+          <h3>Porsche 911 Turbo S</h3>
+          <p>Sports Coupe • 640 HP</p>
+          <button onclick="toggleDetails('porsche-911')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 640 HP</li>
+              <li>Top Speed: 330 km/h</li>
+              <li>Price: ₹23000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Porsche 911 Turbo S" 
+                    data-price="23000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Porsche Taycan Turbo S -->
+        <div class="car-card" id="porsche-taycan" onmouseleave="resetCard('porsche-taycan')">
+          <img src="Images/porscheTaycan.jpg" alt="Porsche Taycan Turbo S">
+          <h3>Porsche Taycan Turbo S</h3>
+          <p>Electric Sedan • 750 HP</p>
+          <button onclick="toggleDetails('porsche-taycan')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Electric</li>
+              <li>Power: 750 HP</li>
+              <li>Top Speed: 260 km/h</li>
+              <li>Price: ₹19500000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Porsche Taycan Turbo S" 
+                    data-price="19500000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Rolls-Royce -->
+    <section id="rolls">
+      <h1 class="brand-title"> ROLLS-ROYCE </h1>
+      <div class="car-grid">
+
+        <!-- Rolls-Royce Phantom -->
+        <div class="car-card" id="rolls-phantom" onmouseleave="resetCard('rolls-phantom')">
+          <img src="Images/rollsPhantom.jpg" alt="Rolls-Royce Phantom">
+          <h3>Rolls-Royce Phantom</h3>
+          <p>Luxury Sedan • 563 HP</p>
+          <button onclick="toggleDetails('rolls-phantom')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 563 HP</li>
+              <li>Top Speed: 250 km/h</li>
+              <li>Price: ₹35000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Rolls-Royce Phantom" 
+                    data-price="35000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Rolls-Royce Ghost -->
+        <div class="car-card" id="rolls-ghost" onmouseleave="resetCard('rolls-ghost')">
+          <img src="Images/rollsGhost.jpg" alt="Rolls-Royce Ghost">
+          <h3>Rolls-Royce Ghost</h3>
+          <p>Luxury Sedan • 563 HP</p>
+          <button onclick="toggleDetails('rolls-ghost')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 563 HP</li>
+              <li>Top Speed: 250 km/h</li>
+              <li>Price: ₹30000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Rolls-Royce Ghost" 
+                    data-price="30000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Rolls-Royce Cullinan -->
+        <div class="car-card" id="rolls-cullinan" onmouseleave="resetCard('rolls-cullinan')">
+          <img src="Images/rollsCullinan.jpg" alt="Rolls-Royce Cullinan">
+          <h3>Rolls-Royce Cullinan</h3>
+          <p>Luxury SUV • 592 HP</p>
+          <button onclick="toggleDetails('rolls-cullinan')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 592 HP</li>
+              <li>Top Speed: 250 km/h</li>
+              <li>Price: ₹32000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Rolls-Royce Cullinan" 
+                    data-price="32000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Maserati -->
+    <section id="maserati">
+      <h1 class="brand-title"> MASERATI </h1>
+      <div class="car-grid">
+
+        <!-- Maserati MC20 -->
+        <div class="car-card" id="maserati-mc20" onmouseleave="resetCard('maserati-mc20')">
+          <img src="Images/maseratiMC20.jpg" alt="Maserati MC20">
+          <h3>Maserati MC20</h3>
+          <p>Supercar • 621 HP</p>
+          <button onclick="toggleDetails('maserati-mc20')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 621 HP</li>
+              <li>Top Speed: 325 km/h</li>
+              <li>Price: ₹24000000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Maserati MC20" 
+                    data-price="24000000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Maserati Levante -->
+        <div class="car-card" id="maserati-levante" onmouseleave="resetCard('maserati-levante')">
+          <img src="Images/maseratiLevante.jpeg" alt="Maserati Levante">
+          <h3>Maserati Levante</h3>
+          <p>Luxury SUV • 572 HP</p>
+          <button onclick="toggleDetails('maserati-levante')">View Details</button>
+          <div class="car-details">
+            <h4>Specifications</h4>
+            <ul>
+              <li>Fuel: Petrol</li>
+              <li>Power: 572 HP</li>
+              <li>Top Speed: 302 km/h</li>
+              <li>Price: ₹10500000</li>
+              <li>Status: Available</li>
+            </ul>
+            <button class="reserve-btn" 
+                    data-car="Maserati Levante" 
+                    data-price="10500000">
+              Reserve Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </section>
+
+  <br><br>
+
+  <!-- Experience Section -->
+  <section id="experience" class="experience-section">
+    <div class="experience-container">
+      `<h2>The Continental Experience</h2>
+      <p>
+        More than cars — we deliver journeys. Step into a world where luxury meets performance,
+        and every drive is crafted to be unforgettable.
+      </p>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about" class="about-section">
+    <div class="about-container">
+      <h2>About Us</h2>
+      <p>
+        At <strong>Continental Motors</strong>, we redefine luxury driving. Our curated collection brings together
+        the world’s most iconic cars, blending performance, elegance, and innovation.
+      </p>
+      <p>
+        With a passion for excellence, we offer not just cars, but unforgettable experiences —
+        crafted for those who demand more than just a drive.
+      </p>
+    </div>
+  </section>
+
+  <!-- Frequently Asked Questions (FAQs) Section -->
+  <section id="faq" class="faq-section">
+    <div class="faq-container">
+      <h2>Frequently Asked Questions</h2>
+      <p class="section-subtitle">Everything you need to know about reserving your bespoke supercars with Continental Motors.</p>
+      
+      <div class="faq-accordion">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>1. How does the vehicle reservation process work?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Reserving your dream automobile with Continental Motors is seamless. Browse our curated collection, select your desired vehicle, and click <strong>Reserve Now</strong>. Provide your name and email to initiate the reservation booking. Upon confirmation, a official receipt is generated and our concierge team contacts you directly to complete final bespoke configurations and delivery schedules.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>2. Are all listed vehicles available for immediate delivery?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Vehicles listed in our collection with "Status: Available" are either ready in our private showroom network or scheduled for expedited priority allocation. Certain rare hypercars like Pagani and limited-run Ferrari editions may undergo customized pre-delivery inspections tailored to client preferences.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>3. What payment methods are accepted for supercar reservations?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>We accept wire transfers, certified bank drafts, major credit cards, and verified private escrow channels. Full payment terms and customized luxury financing arrangements are finalized with our financial advisors following your initial reservation confirmation.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>4. Can I arrange a private viewing or test drive before final payment?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. Reserved clients are invited to exclusive private viewing suites at our luxury facilities or closed-circuit track experiences. Chauffeured white-glove transport to our private collection showrooms can be arranged upon request.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>5. Do you offer international logistics and enclosed white-glove delivery?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely. Continental Motors provides climate-controlled, covered, single-vehicle transporter logistics globally. Complete customs clearance, transit insurance, and doorstep delivery are standard across all reservations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Terms of Service Section -->
+  <section id="terms" class="terms-section">
+    <div class="policy-container">
+      <h2>Terms of Service</h2>
+      <p class="section-subtitle">Please read these Terms of Service carefully before utilizing Continental Motors platform services.</p>
+      
+      <div class="policy-content">
+        <article class="policy-block">
+          <h3>1. Acceptance of Terms</h3>
+          <p>By accessing or interacting with Continental Motors ("Company", "We", "Our"), you agree to be bound by these Terms of Service. If you do not agree to all terms, please refrain from using our digital platform and vehicle reservation services.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>2. Vehicle Reservations & Deposits</h3>
+          <p>Submitting a reservation request generates an official provisional invoice and holds priority status for the chosen vehicle. Final title transfers, sales contracts, and vehicle handovers are subject to verification of identity, background checks, and clearance of full purchase funds.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>3. Pricing, Specifications & Availability</h3>
+          <p>All pricing listed in Indian Rupees (₹) reflects current manufacturer specifications and estimated import duties. Continental Motors reserves the right to modify specifications, prices, and availability without prior notice. Final binding prices are confirmed on your written sales agreement.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>4. Delivery & Risk of Loss</h3>
+          <p>Risk of loss and title to the automobile transfer to the buyer upon formal delivery execution. Delivery timelines provided by our concierge team are estimates based on customs clearance and transport schedules.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>5. Intellectual Property</h3>
+          <p>All brand marks, vehicle imagery, logos, video assets, carbon typography, and design elements featured on Continental Motors are protected trademark and copyright materials of Continental Motors or their respective original manufacturers.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>6. Limitation of Liability</h3>
+          <p>Continental Motors shall not be liable for any indirect, incidental, or consequential damages arising from site unavailability, transaction processing delays, or third-party logistics events beyond our reasonable control.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy Policy Section -->
+  <section id="privacy" class="privacy-section">
+    <div class="policy-container">
+      <h2>Privacy Policy</h2>
+      <p class="section-subtitle">Your privacy and data security are paramount to Continental Motors.</p>
+      
+      <div class="policy-content">
+        <article class="policy-block">
+          <h3>1. Data We Collect</h3>
+          <p>We collect personal information that you voluntarily provide when creating an account or reserving a vehicle. This includes your full name, email address, phone number, reservation history, and vehicle preferences.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>2. How We Use Your Information</h3>
+          <p>Your data is strictly utilized to process vehicle reservation receipts, coordinate white-glove delivery, verify identity for high-value transactions, respond to concierge inquiries, and send tailored luxury vehicle announcements if requested.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>3. Data Protection & Confidentiality</h3>
+          <p>Continental Motors employs enterprise-grade encryption protocols and strict access controls to safeguard client credentials and financial invoice records. We never sell, rent, or trade client personal data to third-party marketers.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>4. Cookies & Local Storage</h3>
+          <p>Our platform uses local browser storage to temporarily save active reservation receipts and user preferences (such as profile details) to ensure a fluid browsing experience across sessions.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>5. Third-Party Partners</h3>
+          <p>Data shared with verified partners (such as private escrow agents or enclosed transport logistics providers) is strictly limited to information necessary for completing vehicle acquisitions and delivery.</p>
+        </article>
+
+        <article class="policy-block">
+          <h3>6. Your Rights & Contacts</h3>
+          <p>You have the right to request access to, update, or permanently delete your profile data from our records at any time by contacting our Privacy Office at <strong>privacy@continentalmotors.com</strong>.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-about">
+        <h3>Continental Motors</h3>
+        <p>Beyond Luxury. Beyond Limits.</p><br>
+        <u>Founders:</u> <br><br>  
+        Mihir Lodhiya <br><br>
+        Harshit Vadgama<br><br>
+        Satyensinh Jadeja<br>
+      </div> 
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Home</li>
+          <li onclick="scrollToSection('trilogy')">Our Epic Trilogy</li>
+          <li onclick="scrollToCollection()">Collection</li>
+          <li onclick="scrollToSection('faq')">FAQs</li>
+          <li onclick="scrollToSection('terms')">Terms of Service</li>
+          <li onclick="scrollToSection('privacy')">Privacy Policy</li>
+          <li onclick="scrollToSection('about')">Contact</li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact Us</h4>
+        <p>Email: info@continentalmotors.com</p>
+        <p>Phone: +91 99999 99999</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Continental Motors | All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
